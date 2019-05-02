@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.command.Command;
+import com.company.command.Config;
 
 import java.io.IOException;
 import java.util.List;
