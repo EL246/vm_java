@@ -1,5 +1,6 @@
 package com.company.command;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PopCommand extends Command {
@@ -9,6 +10,11 @@ public class PopCommand extends Command {
 
     @Override
     public List<String> getCommandString() {
-        return null;
+        ArrayList<String> commands = new ArrayList<>();
+
+        String commentedOriginalLine = "// " + "pop" + this.getOperation() + " " + this.getVar();
+        commands.add(commentedOriginalLine);
+
+        return commands;
     }
 }

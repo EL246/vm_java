@@ -16,4 +16,12 @@ public abstract class Command {
     }
 
     public abstract List<String> getCommandString();
+
+    public String getOperation() {
+        return operation;
+    }
+
+    public int getVar() {
+        return var;
+    }
 }
