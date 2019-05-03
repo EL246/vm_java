@@ -8,7 +8,7 @@ public class ArithmeticCommand extends Command {
     }
 
     @Override
-    public List<String> getCommandString() {
+    public List<String> getCommands() {
         return null;
     }
 }

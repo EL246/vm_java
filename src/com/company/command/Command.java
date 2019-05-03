@@ -15,7 +15,7 @@ public abstract class Command {
         this.operation = operation;
     }
 
-    public abstract List<String> getCommandString();
+    public abstract List<String> getCommands();
 
     String getOperation() {
         return operation;

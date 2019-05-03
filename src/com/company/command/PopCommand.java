@@ -5,32 +5,27 @@ import com.company.config.Config;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PopCommand extends Command {
-    private String filename;
-    private ArrayList<String> commands;
+public class PopCommand extends PoporPushCommand {
 
     public PopCommand(String operation, int var, String filename) {
-        super(operation, var);
-        this.filename = filename;
-        commands = new ArrayList<>();
+        super(operation, var, filename);
     }
 
     @Override
-    public List<String> getCommandString() {
+    public List<String> getCommands() {
         String commentedOriginalLine = getOriginalVMLine();
-        commands.add(commentedOriginalLine);
+        getCommandArray().add(commentedOriginalLine);
 
-        getCommands(commands);
+        createCommands();
 
-        System.out.println("Pop command size: " + commands.size());
-        return commands;
+        return getCommandArray();
     }
 
     private String getOriginalVMLine() {
         return "// " + "pop " + this.getOperation() + " " + this.getVar();
     }
 
-    private ArrayList<String> getCommands(ArrayList<String> commands) {
+    private void createCommands() {
 //        get values at specified register (e.g. local 17)
         String location;
         switch (this.getOperation()) {
@@ -42,8 +37,8 @@ public class PopCommand extends Command {
                 getRegisterLocation();
 //                store in a temporary location (R13)
                 location = "@R13";
-                commands.add(location);
-                commands.add("M=D");
+                getCommandArray().add(location);
+                getCommandArray().add("M=D");
 //                get stack value (SP)
                 getSpValue();
 //              set stack value
@@ -53,7 +48,7 @@ public class PopCommand extends Command {
                 break;
             case "static":
 //                @foo.5
-                location = "@" + filename + "." + getVar();
+                location = "@" + getFilename() + "." + getVar();
                 handleNonRegisterCommand(location);
                 break;
             case "pointer":
@@ -68,12 +63,10 @@ public class PopCommand extends Command {
                 handleNonRegisterCommand(location);
                 break;
         }
-
-
-        return commands;
     }
 
     private void handleNonRegisterCommand(String location) {
+        ArrayList<String> commands = getCommandArray();
         getSpValue();
         commands.add(location);
         commands.add("M=D");
@@ -81,17 +74,20 @@ public class PopCommand extends Command {
     }
 
     private void setSPToNewLocation(String location) {
+        ArrayList<String> commands = getCommandArray();
         commands.add(location);
         commands.add("A=M");
         commands.add("M=D");
     }
 
     private void reduceSP() {
+        ArrayList<String> commands = getCommandArray();
         commands.add("@" + Integer.toString(getSp()));
         commands.add("M=M-1");
     }
 
     private void getSpValue() {
+        ArrayList<String> commands = getCommandArray();
         int sp = getSp();
         commands.add("@" + Integer.toString(sp));
         commands.add("A=M");
@@ -103,6 +99,7 @@ public class PopCommand extends Command {
     }
 
     private void getRegisterLocation() {
+        ArrayList<String> commands = getCommandArray();
 
 //        TODO: check for null, and get key only if operation is of type arg/local/this/that
         int index = Config.getRegisterPointersKey(this.getOperation());

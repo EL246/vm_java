@@ -11,7 +11,7 @@ class CodeWriter {
     private String filePath;
     private List<Command> linesToAdd;
 
-    CodeWriter(String filePath, List<Command> linesToAdd) throws IOException {
+    CodeWriter(String filePath, List<Command> linesToAdd) {
         this.filePath = filePath;
         this.linesToAdd = linesToAdd;
     }
@@ -36,6 +36,6 @@ class CodeWriter {
     }
 
     private List<String> getCommandStrings(Command commandToAdd) {
-        return commandToAdd.getCommandString();
+        return commandToAdd.getCommands();
     }
 }
