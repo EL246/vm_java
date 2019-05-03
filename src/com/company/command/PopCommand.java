@@ -1,5 +1,7 @@
 package com.company.command;
 
+import com.company.config.Config;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -11,17 +11,17 @@ public abstract class Command {
         this.var = var;
     }
 
-    public Command(String operation) {
+    Command(String operation) {
         this.operation = operation;
     }
 
     public abstract List<String> getCommandString();
 
-    public String getOperation() {
+    String getOperation() {
         return operation;
     }
 
-    public int getVar() {
+    int getVar() {
         return var;
     }
 }

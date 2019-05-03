@@ -1,4 +1,4 @@
-package com.company.command;
+package com.company.config;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +15,7 @@ public class Config {
         registerPointers.put("that",4);
     }
 
-    static Integer getRegisterPointersKey(String key) {
+    public static Integer getRegisterPointersKey(String key) {
         return registerPointers.get(key);
     }
 }
