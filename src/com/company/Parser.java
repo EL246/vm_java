@@ -12,12 +12,14 @@ import java.util.List;
 import java.util.Scanner;
 
 class Parser {
+    private String filename;
     private File file;
     private List<Command> linesToAdd;
 
     Parser(String filepath) {
         file = new File(filepath);
         linesToAdd = new ArrayList<>();
+        this.filename = filepath.replace(".vm","");
     }
 
     List<Command> handle() throws FileNotFoundException {
@@ -61,7 +63,6 @@ class Parser {
         String operation = args[0];
         String location = args[1];
         int var = Integer.valueOf(args[2]);
-        Command command = operation.equals("push") ? new PushCommand(location,var) : new PopCommand(location, var);
-        return command;
+        return operation.equals("push") ? new PushCommand(location,var, filename) : new PopCommand(location, var, filename);
     }
 }

@@ -3,8 +3,11 @@ package com.company.command;
 import java.util.List;
 
 public class PushCommand extends Command {
-    public PushCommand(String operation, int var) {
+    private String filename;
+
+    public PushCommand(String operation, int var, String filename) {
         super(operation, var);
+        this.filename = filename;
     }
 
     @Override

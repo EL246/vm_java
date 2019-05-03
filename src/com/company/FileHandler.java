@@ -16,7 +16,7 @@ class FileHandler {
         Parser parser = new Parser(filePath);
         List<Command> linesToAdd = parser.handle();
 
-        String newFilePath = filePath.replace(".asm", ".hack");
+        String newFilePath = filePath.replace(".vm", ".asm");
         CodeWriter codeWriter = new CodeWriter(newFilePath, linesToAdd);
         codeWriter.handle();
     }

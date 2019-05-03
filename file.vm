@@ -1,8 +1,8 @@
-//push argument 2 // comment
+// push argument 2 // comment
+// pop static 5
 pop local 5
-//pop static 5
 // add
-// sub
+//sub
 
 
 //this is a comment
