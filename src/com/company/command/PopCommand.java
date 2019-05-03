@@ -13,16 +13,12 @@ public class PopCommand extends PoporPushCommand {
 
     @Override
     public List<String> getCommands() {
-        String commentedOriginalLine = getOriginalVMLine();
+        String commentedOriginalLine = getOriginalVMLine("pop");
         getCommandArray().add(commentedOriginalLine);
 
         createCommands();
 
         return getCommandArray();
-    }
-
-    private String getOriginalVMLine() {
-        return "// " + "pop " + this.getOperation() + " " + this.getVar();
     }
 
     private void createCommands() {
@@ -92,22 +88,5 @@ public class PopCommand extends PoporPushCommand {
         commands.add("@" + Integer.toString(sp));
         commands.add("A=M");
         commands.add("D=M");
-    }
-
-    private int getSp() {
-        return Config.getRegisterPointersKey("SP");
-    }
-
-    private void getRegisterLocation() {
-        ArrayList<String> commands = getCommandArray();
-
-//        TODO: check for null, and get key only if operation is of type arg/local/this/that
-        int index = Config.getRegisterPointersKey(this.getOperation());
-
-        commands.add("@" + index);
-        commands.add("D=M");
-        commands.add("@" + getVar());
-        commands.add("D=D+A");
-
     }
 }
