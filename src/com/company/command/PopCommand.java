@@ -1,7 +1,5 @@
 package com.company.command;
 
-import com.company.config.Config;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,16 +74,9 @@ public class PopCommand extends PoporPushCommand {
         commands.add("M=D");
     }
 
-    private void reduceSP() {
-        ArrayList<String> commands = getCommandArray();
-        commands.add("@" + Integer.toString(getSp()));
-        commands.add("M=M-1");
-    }
-
     private void getSpValue() {
         ArrayList<String> commands = getCommandArray();
-        int sp = getSp();
-        commands.add("@" + Integer.toString(sp));
+        commands.add("@" + Symbol.SP);
         commands.add("A=M");
         commands.add("D=M");
     }

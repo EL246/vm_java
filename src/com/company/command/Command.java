@@ -12,6 +12,18 @@ public abstract class Command {
         this.commands = new ArrayList<>();
     }
 
+    void reduceSP() {
+        ArrayList<String> commands = getCommandArray();
+        commands.add("@" + Symbol.SP);
+        commands.add("M=M-1");
+    }
+
+    void incrementSP() {
+        ArrayList<String> commands = getCommandArray();
+        commands.add("@" + Symbol.SP);
+        commands.add("M=M+1");
+    }
+
     public abstract List<String> getCommands();
 
     String getOperation() {
