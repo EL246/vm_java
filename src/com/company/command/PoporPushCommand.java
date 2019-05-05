@@ -6,12 +6,12 @@ import java.util.ArrayList;
 
 abstract class PoporPushCommand extends Command {
     private String filename;
-    private ArrayList<String> commands;
+    private int var;
 
     PoporPushCommand(String operation, int var, String filename) {
-        super(operation, var);
+        super(operation);
         this.filename = filename;
-        this.commands = new ArrayList<>();
+        this.var = var;
     }
 
     String getOriginalVMLine(String action) {
@@ -35,11 +35,12 @@ abstract class PoporPushCommand extends Command {
         return Config.getRegisterPointersKey("SP");
     }
 
-    ArrayList<String> getCommandArray() {
-        return commands;
-    }
-
     String getFilename() {
         return filename;
     }
+
+    int getVar() {
+        return var;
+    }
+
 }

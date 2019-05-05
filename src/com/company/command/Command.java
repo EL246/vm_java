@@ -1,18 +1,15 @@
 package com.company.command;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Command {
     private String operation;
-    private int var;
-
-    Command(String operation, int var) {
-        this.operation = operation;
-        this.var = var;
-    }
+    private ArrayList<String> commands;
 
     Command(String operation) {
         this.operation = operation;
+        this.commands = new ArrayList<>();
     }
 
     public abstract List<String> getCommands();
@@ -21,7 +18,7 @@ public abstract class Command {
         return operation;
     }
 
-    int getVar() {
-        return var;
+    ArrayList<String> getCommandArray() {
+        return commands;
     }
 }

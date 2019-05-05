@@ -9,6 +9,8 @@ public class ArithmeticCommand extends Command {
 
     @Override
     public List<String> getCommands() {
+        ArithmeticOperations operation = ArithmeticOperations.valueOf(getOperation());
+//        get arg1 (sp-2)
         return null;
     }
 }
