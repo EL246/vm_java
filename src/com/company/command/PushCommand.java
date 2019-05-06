@@ -52,9 +52,17 @@ public class PushCommand extends PoporPushCommand {
                 break;
             case "constant":
                 location = "@" + getVar();
-                handleNonRegisterPushCommand(location);
+                handleConstantPushCommand(location);
                 break;
         }
+    }
+
+    private void handleConstantPushCommand(String location) {
+        ArrayList<String> commands = getCommandArray();
+        commands.add(location);
+        commands.add("D=A");
+        setSPValue();
+        incrementSP();
     }
 
     private void handleNonRegisterPushCommand(String location) {

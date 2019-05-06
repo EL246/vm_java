@@ -21,6 +21,9 @@ public class ArithmeticCommand extends Command {
             getArg();
         }
         doOperation(operation);
+        if (operation.hasTwoArgs()) {
+            reduceSP();
+        }
         storeValueInSP();
         incrementSP();
 //        get arg2 (sp-1)
@@ -36,6 +39,7 @@ public class ArithmeticCommand extends Command {
 //            e.g. D = D-M
 //        store in SP
 //            @SP
+//            A=M
 //            M=D
 //        increment SP
 //            @SP
@@ -46,6 +50,7 @@ public class ArithmeticCommand extends Command {
     private void storeValueInSP() {
         ArrayList<String> commands = getCommandArray();
         commands.add("@" + Symbol.SP);
+        commands.add("A=M");
         commands.add("M=D");
     }
 

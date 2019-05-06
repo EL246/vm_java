@@ -3,6 +3,7 @@ package com.company.config;
 import java.util.HashMap;
 import java.util.Map;
 
+//TODO: Remove this class
 public class Config {
     private static Map<String, Integer>  registerPointers;
 
