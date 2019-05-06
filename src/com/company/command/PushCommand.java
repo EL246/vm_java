@@ -1,7 +1,5 @@
 package com.company.command;
 
-import com.company.config.Config;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +29,7 @@ public class PushCommand extends PoporPushCommand {
             case "this":
             case "that":
                 getRegisterLocation();
+                getRegisterValue();
                 setSPValue();
                 incrementSP();
                 break;
@@ -40,9 +39,9 @@ public class PushCommand extends PoporPushCommand {
                 handleNonRegisterPushCommand(location);
                 break;
             case "pointer":
-                String target = getVar()==0? "this" : "that";
-                int addr = Config.getRegisterPointersKey(target);
-                location = "@" + addr;
+                String target = getVar()==0? "THIS" : "THAT";
+                String pointer = Symbol.valueOf(target).toString();
+                location = "@" + pointer;
                 handleNonRegisterPushCommand(location);
                 break;
             case "temp":
@@ -82,5 +81,11 @@ public class PushCommand extends PoporPushCommand {
         commands.add("@" + Symbol.SP);
         commands.add("A=M");
         commands.add("M=D");
+    }
+
+    private void getRegisterValue() {
+        ArrayList<String> commands = getCommandArray();
+        commands.add("A=D");
+        commands.add("D=M");
     }
 }

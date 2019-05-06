@@ -19,7 +19,10 @@ class Parser {
     Parser(String filepath) {
         file = new File(filepath);
         linesToAdd = new ArrayList<>();
-        this.filename = filepath.replace(".vm","");
+
+        String[] f = filepath.split("/");
+        int index = f.length-1;
+        this.filename = f[index].replace(".vm","");
     }
 
     List<Command> handle() throws FileNotFoundException {

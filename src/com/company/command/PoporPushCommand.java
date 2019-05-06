@@ -1,7 +1,5 @@
 package com.company.command;
 
-import com.company.config.Config;
-
 import java.util.ArrayList;
 
 abstract class PoporPushCommand extends Command {
@@ -22,17 +20,13 @@ abstract class PoporPushCommand extends Command {
         ArrayList<String> commands = getCommandArray();
 
 //        TODO: check for null, and get key only if operation is of type arg/local/this/that
-        int index = Config.getRegisterPointersKey(this.getOperation());
+//        TODO: add final keyword
+        final String pointer = Symbol.valueOf(this.getOperation().toUpperCase()).toString();
 
-        commands.add("@" + index);
+        commands.add("@" + pointer);
         commands.add("D=M");
         commands.add("@" + getVar());
         commands.add("D=D+A");
-
-    }
-
-    int getSp() {
-        return Config.getRegisterPointersKey("SP");
     }
 
     String getFilename() {

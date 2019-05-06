@@ -46,8 +46,7 @@ public class PopCommand extends PoporPushCommand {
                 handleNonRegisterCommand(location);
                 break;
             case "pointer":
-//                TODO: does asm understand @THIS and @THAT, vs @0/@1 (if so, update)
-                String target = getVar()==0? "this" : "that";
+                String target = getVar()==0? "THIS" : "THAT";
                 location = "@" + target;
                 handleNonRegisterCommand(location);
                 break;
@@ -77,7 +76,8 @@ public class PopCommand extends PoporPushCommand {
     private void getSpValue() {
         ArrayList<String> commands = getCommandArray();
         commands.add("@" + Symbol.SP);
-        commands.add("A=M");
+//        get last value on stack
+        commands.add("A=M-1");
         commands.add("D=M");
     }
 }
