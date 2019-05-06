@@ -1,12 +1,13 @@
 package com.company.command;
 
+//TODO: better way to represent eq, gt, lt?
 public enum ArithmeticOperations {
     add("add", true, "D=M+D", false),
     sub("sub", true, "D=M-D", false),
     neg("neg", false, "D=-D", false),
-    eq("eq", true, "M-D; JEQ", true),
-    gt("gt", true, "M-D; JGT", true),
-    lt("lt", true, "M-D; JLT", true),
+    eq("eq", true, "D; JEQ", true),
+    gt("gt", true, "D; JGT", true),
+    lt("lt", true, "D; JLT", true),
     and("and", true, "D=M&D", false),
     or("or", true, "D=M|D", false),
     not("not", false, "D=!D", false);

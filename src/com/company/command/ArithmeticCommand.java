@@ -67,14 +67,16 @@ public class ArithmeticCommand extends Command {
 
     private void handleComparisonOperation(ArithmeticOperations operation) {
         ArrayList<String> commands = getCommandArray();
+        commands.add("D=M-D");
         String trueLabel = "TRUE." + labelID;
         String endLabel = "END." + labelID;
         commands.add("@" + trueLabel);
         commands.add(operation.getOperationString());
         commands.add("D=0");
         commands.add("@" + endLabel);
+        commands.add("0;JMP");
         commands.add("(" + trueLabel + ")");
-        commands.add("D=1");
+        commands.add("D=-1");
         commands.add("(" + endLabel + ")");
         labelID++;
     }
