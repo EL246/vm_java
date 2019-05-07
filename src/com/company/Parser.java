@@ -69,12 +69,12 @@ class Parser {
         String[] words = line.split("\\s+");
         String operation = words[0].replaceAll("\\s+", "");
         if (operation.equals("return")) {
-            return new FunctionCommand(operation);
+            return new FunctionCommand(filename, operation);
         }
         String functionName = words[1].replaceAll("\\s+","");
         String n = words[2].replaceAll("\\s+","");
         int numArgs = Integer.valueOf(n);
-        return new FunctionCommand(operation, functionName, numArgs);
+        return new FunctionCommand(filename, operation, functionName, numArgs);
     }
 
     private Command parseBranchOperation(String line) {

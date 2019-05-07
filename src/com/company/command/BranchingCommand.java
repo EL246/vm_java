@@ -17,7 +17,7 @@ public class BranchingCommand extends Command {
 
         switch (getOperation()) {
             case "label":
-                createLabel();
+                createLabel(labelName);
                 break;
             case "goto":
                 createGoto();
@@ -41,10 +41,5 @@ public class BranchingCommand extends Command {
         ArrayList<String> commands = getCommandArray();
         commands.add("@" + labelName);
         commands.add("0;JMP");
-    }
-
-    private void createLabel() {
-        ArrayList<String> commands = getCommandArray();
-        commands.add("(" + labelName + ")");
     }
 }

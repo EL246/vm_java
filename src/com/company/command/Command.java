@@ -32,6 +32,11 @@ public abstract class Command {
         commands.add("D=M");
     }
 
+    void createLabel(String labelName) {
+        ArrayList<String> commands = getCommandArray();
+        commands.add("(" + labelName + ")");
+    }
+
     public abstract List<String> getCommands();
 
     String getOperation() {
