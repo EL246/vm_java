@@ -1,13 +1,11 @@
 package com.company;
 
-import com.company.command.ArithmeticCommand;
-import com.company.command.Command;
-import com.company.command.PopCommand;
-import com.company.command.PushCommand;
+import com.company.command.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,13 +14,15 @@ class Parser {
     private File file;
     private List<Command> linesToAdd;
 
+    private static List<String> LABEL_KEYWORDS = Arrays.asList("label","goto","if-goto");
+
     Parser(String filepath) {
         file = new File(filepath);
         linesToAdd = new ArrayList<>();
 
         String[] f = filepath.split("/");
-        int index = f.length-1;
-        this.filename = f[index].replace(".vm","");
+        int index = f.length - 1;
+        this.filename = f[index].replace(".vm", "");
     }
 
     List<Command> handle() throws FileNotFoundException {
@@ -51,8 +51,34 @@ class Parser {
     private Command processLine(String line) {
         if (line.contains("push") || line.contains("pop")) {
             return parsePopOrPush(line);
-        } else {
+        } else if (isArithmeticOperation(line)) {
             return parseArithmetic(line);
+        } else if (isBranchOperation(line)) {
+            return parseBranchOperation(line);
+        }
+//        TODO: Should throw an exception instead
+        throw new IllegalArgumentException("Parser unable to parse arguments");
+    }
+
+    private Command parseBranchOperation(String line) {
+        String[] words = line.split("\\s+");
+        String operation = words[0].replaceAll("\\s+","");
+        String label = words[1].replaceAll("\\s+","");
+        return new BranchingCommand(operation,label);
+    }
+
+    private boolean isBranchOperation(String line) {
+        String[] words = line.split("\\s+");
+        String firstWord = words[0].replaceAll("\\s+","");
+        return LABEL_KEYWORDS.contains(firstWord);
+    }
+
+    private boolean isArithmeticOperation(String line) {
+        try {
+            ArithmeticOperations.valueOf(line.replaceAll("\\s+", ""));
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
         }
     }
 
@@ -66,6 +92,6 @@ class Parser {
         String operation = args[0];
         String location = args[1];
         int var = Integer.valueOf(args[2]);
-        return operation.equals("push") ? new PushCommand(location,var, filename) : new PopCommand(location, var, filename);
+        return operation.equals("push") ? new PushCommand(location, var, filename) : new PopCommand(location, var, filename);
     }
 }

@@ -24,6 +24,14 @@ public abstract class Command {
         commands.add("M=M+1");
     }
 
+    void getSpValue() {
+        ArrayList<String> commands = getCommandArray();
+        commands.add("@" + Symbol.SP);
+//        get last value on stack
+        commands.add("A=M-1");
+        commands.add("D=M");
+    }
+
     public abstract List<String> getCommands();
 
     String getOperation() {

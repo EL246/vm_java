@@ -72,12 +72,4 @@ public class PopCommand extends PoporPushCommand {
         commands.add("A=M");
         commands.add("M=D");
     }
-
-    private void getSpValue() {
-        ArrayList<String> commands = getCommandArray();
-        commands.add("@" + Symbol.SP);
-//        get last value on stack
-        commands.add("A=M-1");
-        commands.add("D=M");
-    }
 }
