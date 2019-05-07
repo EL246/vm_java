@@ -95,7 +95,7 @@ class Parser {
 
     private boolean doesArrayContain(String line, List<String> list ) {
         String firstWord = getOperationKeyword(line);
-        return list.contains(line);
+        return list.contains(firstWord);
     }
 
     private String getOperationKeyword(String line) {
