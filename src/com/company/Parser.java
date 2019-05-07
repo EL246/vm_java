@@ -62,8 +62,7 @@ class Parser {
         if (isFunctionOperation(line)) {
             return parseFunctionOperation(line);
         }
-//        TODO: Should throw an exception instead
-        throw new IllegalArgumentException("Parser unable to parse arguments");
+        throw new IllegalArgumentException("Unable to parse arguments");
     }
 
     private Command parseFunctionOperation(String line) {
