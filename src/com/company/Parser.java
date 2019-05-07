@@ -14,7 +14,8 @@ class Parser {
     private File file;
     private List<Command> linesToAdd;
 
-    private static List<String> LABEL_KEYWORDS = Arrays.asList("label","goto","if-goto");
+    private static List<String> BRANCH_KEYWORDS = Arrays.asList("label", "goto", "if-goto");
+    private static List<String> FUNCTION_KEYWORDS = Arrays.asList("function", "call", "return");
 
     Parser(String filepath) {
         file = new File(filepath);
@@ -51,26 +52,52 @@ class Parser {
     private Command processLine(String line) {
         if (line.contains("push") || line.contains("pop")) {
             return parsePopOrPush(line);
-        } else if (isArithmeticOperation(line)) {
+        }
+        if (isArithmeticOperation(line)) {
             return parseArithmetic(line);
-        } else if (isBranchOperation(line)) {
+        }
+        if (isBranchOperation(line)) {
             return parseBranchOperation(line);
+        }
+        if (isFunctionOperation(line)) {
+            return parseFunctionOperation(line);
         }
 //        TODO: Should throw an exception instead
         throw new IllegalArgumentException("Parser unable to parse arguments");
     }
 
+    private Command parseFunctionOperation(String line) {
+        String[] words = line.split("\\s+");
+        String operation = words[0].replaceAll("\\s+", "");
+        if (operation.equals("return")) {
+            return new FunctionCommand(operation);
+        }
+        String functionName = words[1].replaceAll("\\s+","");
+        String n = words[2].replaceAll("\\s+","");
+        int numArgs = Integer.valueOf(n);
+        return new FunctionCommand(operation, functionName, numArgs);
+    }
+
     private Command parseBranchOperation(String line) {
         String[] words = line.split("\\s+");
-        String operation = words[0].replaceAll("\\s+","");
-        String label = words[1].replaceAll("\\s+","");
-        return new BranchingCommand(operation,label);
+        String operation = words[0].replaceAll("\\s+", "");
+        String label = words[1].replaceAll("\\s+", "");
+        return new BranchingCommand(operation, label);
     }
 
     private boolean isBranchOperation(String line) {
+        String firstWord = getOperationKeyword(line);
+        return BRANCH_KEYWORDS.contains(firstWord);
+    }
+
+    private String getOperationKeyword(String line) {
         String[] words = line.split("\\s+");
-        String firstWord = words[0].replaceAll("\\s+","");
-        return LABEL_KEYWORDS.contains(firstWord);
+        return words[0].replaceAll("\\s+", "");
+    }
+
+    private boolean isFunctionOperation(String line) {
+        String firstWord = getOperationKeyword(line);
+        return FUNCTION_KEYWORDS.contains(firstWord);
     }
 
     private boolean isArithmeticOperation(String line) {
