@@ -86,18 +86,21 @@ class Parser {
     }
 
     private boolean isBranchOperation(String line) {
+        return doesArrayContain(line, BRANCH_KEYWORDS);
+    }
+
+    private boolean isFunctionOperation(String line) {
+        return doesArrayContain(line, FUNCTION_KEYWORDS);
+    }
+
+    private boolean doesArrayContain(String line, List<String> list ) {
         String firstWord = getOperationKeyword(line);
-        return BRANCH_KEYWORDS.contains(firstWord);
+        return list.contains(line);
     }
 
     private String getOperationKeyword(String line) {
         String[] words = line.split("\\s+");
         return words[0].replaceAll("\\s+", "");
-    }
-
-    private boolean isFunctionOperation(String line) {
-        String firstWord = getOperationKeyword(line);
-        return FUNCTION_KEYWORDS.contains(firstWord);
     }
 
     private boolean isArithmeticOperation(String line) {
