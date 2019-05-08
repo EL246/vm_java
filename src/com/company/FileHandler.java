@@ -8,18 +8,28 @@ import java.util.List;
 
 class FileHandler {
     private String filePath;
+    private String asmFileName;
 
     FileHandler(String filePath) {
         this.filePath = filePath;
+        File file = new File(filePath);
+        if (!file.isDirectory()) {
+            throw new IllegalArgumentException("File specified instead of directory");
+        } else {
+            String[] directories = filePath.split("/");
+            asmFileName = directories[directories.length-1] + ".asm";
+        }
     }
 
     void run() throws IOException {
         getVMFiles(filePath);
-//            check for files
-//            process file if .asm
-//            if directory, process directory
+
     }
 
+/*          check for files
+            process file if .asm
+            if directory, process directory
+*/
     private void getVMFiles(String filePath) throws IOException {
         File file = new File(filePath);
         if (file.isDirectory()) {
@@ -42,7 +52,7 @@ class FileHandler {
         Parser parser = new Parser(file);
         List<Command> linesToAdd = parser.handle();
 
-        String newFilePath = file.getPath().replace(".vm", ".asm");
+        String newFilePath = filePath + "/" + asmFileName;
         System.out.println("Codewriter filepath: " + newFilePath);
         CodeWriter codeWriter = new CodeWriter(newFilePath, linesToAdd);
         codeWriter.handle();

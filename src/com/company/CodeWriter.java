@@ -17,7 +17,7 @@ class CodeWriter {
     }
 
     void handle() throws IOException {
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath, true));
         for (Command command : linesToAdd) {
             writeToFile(command, bufferedWriter);
         }
