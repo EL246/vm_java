@@ -34,7 +34,7 @@ public class PopCommand extends PoporPushCommand {
                 getCommandArray().add(location);
                 getCommandArray().add("M=D");
 //                get stack value (SP)
-                getSpValue();
+                getSpLastAddedValue();
 //              set stack value
                 setSPToNewLocation(location);
 //              reduce stack pointer value (SP--)
@@ -60,7 +60,7 @@ public class PopCommand extends PoporPushCommand {
 
     private void handleNonRegisterCommand(String location) {
         ArrayList<String> commands = getCommandArray();
-        getSpValue();
+        getSpLastAddedValue();
         commands.add(location);
         commands.add("M=D");
         reduceSP();

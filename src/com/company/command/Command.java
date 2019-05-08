@@ -24,7 +24,7 @@ public abstract class Command {
         commands.add("M=M+1");
     }
 
-    void getSpValue() {
+    void getSpLastAddedValue() {
         ArrayList<String> commands = getCommandArray();
         commands.add("@" + Symbol.SP);
 //        get last value on stack
@@ -32,9 +32,22 @@ public abstract class Command {
         commands.add("D=M");
     }
 
+    void getSPIndex() {
+        ArrayList<String> commands = getCommandArray();
+        commands.add("@" + Symbol.SP);
+        commands.add("D=M");
+    }
+
     void createLabel(String labelName) {
         ArrayList<String> commands = getCommandArray();
         commands.add("(" + labelName + ")");
+    }
+
+    void setSPValue() {
+        ArrayList<String> commands = getCommandArray();
+        commands.add("@" + Symbol.SP);
+        commands.add("A=M");
+        commands.add("M=D");
     }
 
     public abstract List<String> getCommands();

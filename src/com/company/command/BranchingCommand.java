@@ -31,7 +31,7 @@ public class BranchingCommand extends Command {
 
     private void createIfGoto() {
         ArrayList<String> commands = getCommandArray();
-        getSpValue();
+        getSpLastAddedValue();
         reduceSP();
         commands.add("@"+labelName);
         commands.add("D;JNE");

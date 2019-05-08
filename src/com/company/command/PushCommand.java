@@ -76,13 +76,6 @@ public class PushCommand extends PoporPushCommand {
         commands.add("D=M");
     }
 
-    private void setSPValue() {
-        ArrayList<String> commands = getCommandArray();
-        commands.add("@" + Symbol.SP);
-        commands.add("A=M");
-        commands.add("M=D");
-    }
-
     private void getRegisterValue() {
         ArrayList<String> commands = getCommandArray();
         commands.add("A=D");
