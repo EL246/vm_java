@@ -17,13 +17,11 @@ class Parser {
     private static List<String> BRANCH_KEYWORDS = Arrays.asList("label", "goto", "if-goto");
     private static List<String> FUNCTION_KEYWORDS = Arrays.asList("function", "call", "return");
 
-    Parser(String filepath) {
-        file = new File(filepath);
+    Parser(File file) {
+        this.file = file;
         linesToAdd = new ArrayList<>();
 
-        String[] f = filepath.split("/");
-        int index = f.length - 1;
-        this.filename = f[index].replace(".vm", "");
+        this.filename = file.getName().replace(".vm", "");
     }
 
     List<Command> handle() throws FileNotFoundException {
