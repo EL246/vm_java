@@ -44,6 +44,64 @@ public class FunctionCommand extends Command {
     }
 
     private void createReturnCommand() {
+        ArrayList<String> commmands = getCommandArray();
+//        FRAME = LCL (R14)
+        String frameLocation = "@R14";
+        commmands.add("@" + Symbol.LOCAL);
+        commmands.add("D=M");
+        commmands.add(frameLocation);
+        commmands.add("M=D");
+
+//        RET = *(FRAME-5)
+        String retLocation = "R15";
+        updatePointer(frameLocation, 5, retLocation);
+
+//        *ARG = pop()
+        PopCommand pop = new PopCommand("argument",0,filename);
+        commmands.addAll(pop.getCommands());
+
+//        SP = ARG+1
+        commmands.add("@" + Symbol.ARGUMENT);
+        commmands.add("D=M");
+        commmands.add("@1");
+        commmands.add("D=D+A");
+        commmands.add("@" + Symbol.SP);
+        commmands.add("M=D");
+
+//        THAT = *(FRAME-1)
+        updatePointer(frameLocation, 1, Symbol.THAT.toString());
+
+//        THIS = *(FRAME-2)
+        updatePointer(frameLocation, 2, Symbol.THIS.toString());
+
+//        ARG = *(FRAME-3)
+        updatePointer(frameLocation, 3, Symbol.ARGUMENT.toString());
+
+//        LCL = *(FRAME-4)
+        updatePointer(frameLocation,4,Symbol.LOCAL.toString());
+
+//        goto RET
+        commmands.add("@" + retLocation);
+        commmands.add("D=M");
+//        TODO: will this work? :
+        BranchingCommand gotoRet = new BranchingCommand("goto","D");
+    }
+
+    private void updatePointer(String frameLocation, int offset, String pointer) {
+        ArrayList<String> commmands = getCommandArray();
+        getValueOffsetFromFrame(frameLocation, offset);
+        commmands.add("@" + pointer);
+        commmands.add("M=D");
+    }
+
+    private void getValueOffsetFromFrame(String frameLocation, int offset) {
+        ArrayList<String> commmands = getCommandArray();
+        commmands.add(frameLocation);
+        commmands.add("D=M");
+        commmands.add("@" + offset);
+        commmands.add("D=D-A");
+        commmands.add("A=D");
+        commmands.add("D=M");
     }
 
     private void createCallCommands() {
