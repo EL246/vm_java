@@ -8,22 +8,31 @@ import java.util.List;
 
 class FileHandler {
     private String filePath;
-    private String asmFileName;
+    private String asmFilePath;
 
     FileHandler(String filePath) {
         this.filePath = filePath;
         File file = new File(filePath);
         if (!file.isDirectory()) {
-            throw new IllegalArgumentException("File specified instead of directory");
+            asmFilePath = filePath.replace(".vm",".asm");
+//            throw new IllegalArgumentException("File specified instead of directory");
         } else {
             String[] directories = filePath.split("/");
-            asmFileName = directories[directories.length-1] + ".asm";
+            asmFilePath = directories[directories.length-1] + ".asm";
+            asmFilePath = filePath + "/" + asmFilePath;
         }
     }
 
     void run() throws IOException {
-        getVMFiles(filePath);
+        //        create a new empty .asm file for CodeWriter to write to
+        File asmFile = new File(asmFilePath);
+//        TODO: include exception handling
+        if (asmFile.exists()) {
+            asmFile.delete();
+        }
+        asmFile.createNewFile();
 
+        getVMFiles(filePath);
     }
 
 /*          check for files
@@ -52,9 +61,8 @@ class FileHandler {
         Parser parser = new Parser(file);
         List<Command> linesToAdd = parser.handle();
 
-        String newFilePath = filePath + "/" + asmFileName;
-        System.out.println("Codewriter filepath: " + newFilePath);
-        CodeWriter codeWriter = new CodeWriter(newFilePath, linesToAdd);
+        System.out.println("Codewriter filepath: " + asmFilePath);
+        CodeWriter codeWriter = new CodeWriter(asmFilePath, linesToAdd);
         codeWriter.handle();
     }
 }
