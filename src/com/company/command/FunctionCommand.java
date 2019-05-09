@@ -83,8 +83,8 @@ public class FunctionCommand extends Command {
 //        goto RET
         commmands.add("@" + retLocation);
         commmands.add("D=M");
-//        TODO: will this work? :
-        BranchingCommand gotoRet = new BranchingCommand("goto","D");
+        commmands.add("A=M");
+        commmands.add("0;JMP");
     }
 
     private void updatePointer(String frameLocation, int offset, String pointer) {
@@ -105,9 +105,8 @@ public class FunctionCommand extends Command {
     }
 
     private void createCallCommands() {
-        final String functionLabel = filename + "." + functionName;
 //        push return address
-        final String returnAddress = functionLabel + "$" + "returnAddr" + "." + n;
+        final String returnAddress = functionName + "$" + "returnAddr" + "." + n;
         n++;
         pushLabel(returnAddress);
 //        push LCL
@@ -127,7 +126,7 @@ public class FunctionCommand extends Command {
 //        goto f
 //        TODO: add enums for commands
 //        TODO: use function name or filename.functionname?
-        BranchingCommand branchingCommand = new BranchingCommand("goto",functionLabel);
+        BranchingCommand branchingCommand = new BranchingCommand("goto",functionName);
         getCommandArray().addAll(branchingCommand.getCommands());
 //        (return address)
         createLabel(returnAddress);
@@ -137,12 +136,12 @@ public class FunctionCommand extends Command {
 //        create label for function
 //        filename.function
 //        push 0 nArgs times (# of local variables)
-        String functionLabel = filename + "." + functionName;
-        createLabel(functionLabel);
+//        String functionLabel = filename + "." + functionName;
+        createLabel(functionName);
 
         ArrayList<String> commands = getCommandArray();
         for (int i = 0; i < nArgs; i++) {
-            PushCommand pushCommand = new PushCommand("local", 0, filename);
+            PushCommand pushCommand = new PushCommand("constant", 0, filename);
             commands.addAll(pushCommand.getCommands());
         }
     }
@@ -159,9 +158,9 @@ public class FunctionCommand extends Command {
 
         getSPIndex();
         commands.add("@5");
-        commands.add("D=D-M");
+        commands.add("D=D-A");
         commands.add("@"+nArgs);
-        commands.add("D=D-M");
+        commands.add("D=D-A");
         commands.add("@"+Symbol.ARGUMENT);
         commands.add("M=D");
     }
@@ -178,7 +177,8 @@ public class FunctionCommand extends Command {
 
     private void pushLabel(String label) {
         getCommandArray().add("@"+ label);
-        pushReference();
+        getCommandArray().add("D=A");
+        setSPAndIncrement();
     }
 
     private void setSPAndIncrement() {

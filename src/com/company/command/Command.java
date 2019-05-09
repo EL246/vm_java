@@ -24,6 +24,12 @@ public abstract class Command {
         commands.add("M=M+1");
     }
 
+    void getConstantValue(String address){
+        ArrayList<String> commands = getCommandArray();
+        commands.add("@"+address);
+        commands.add("D=A");
+    }
+
     void getSpLastAddedValue() {
         ArrayList<String> commands = getCommandArray();
         commands.add("@" + Symbol.SP);
