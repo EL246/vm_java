@@ -1,9 +1,11 @@
 package com.company;
 
 import com.company.command.Command;
+import com.company.command.InitCommand;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 class FileHandler {
@@ -12,15 +14,24 @@ class FileHandler {
 
     FileHandler(String filePath) {
         this.filePath = filePath;
+        init(filePath);
+    }
+
+    private void init(String filePath) {
         File file = new File(filePath);
         if (!file.isDirectory()) {
             asmFilePath = filePath.replace(".vm",".asm");
-//            throw new IllegalArgumentException("File specified instead of directory");
         } else {
             String[] directories = filePath.split("/");
             asmFilePath = directories[directories.length-1] + ".asm";
             asmFilePath = filePath + "/" + asmFilePath;
         }
+    }
+
+    private void writeInitToFile() throws IOException {
+        InitCommand initCommand = new InitCommand();
+        CodeWriter initWriter = new CodeWriter(asmFilePath, Collections.singletonList(initCommand));
+        initWriter.handle();
     }
 
     void run() throws IOException {
@@ -31,6 +42,7 @@ class FileHandler {
             asmFile.delete();
         }
         asmFile.createNewFile();
+        writeInitToFile();
 
         getVMFiles(filePath);
     }
@@ -44,17 +56,23 @@ class FileHandler {
         if (file.isDirectory()) {
             File[] files = file.listFiles();
             if (files != null) {
-                for (File f : files) {
-                    if (f.isFile() && f.getName().endsWith(".vm")) {
-                        handleFile(f);
-                        System.out.println("Found file: " + f.getName());
-                    } else if (f.isDirectory()) {
-                        getVMFiles(f.getPath());
-                    }
-                }
+                checkForFilesAndProcess(files);
             }
+        } else if (file.isFile()) {
+            handleFile(file);
         }
 
+    }
+
+    private void checkForFilesAndProcess(File[] files) throws IOException {
+        for (File f : files) {
+            if (f.isFile() && f.getName().endsWith(".vm")) {
+                handleFile(f);
+                System.out.println("Found file: " + f.getName());
+            } else if (f.isDirectory()) {
+                getVMFiles(f.getPath());
+            }
+        }
     }
 
     private void handleFile(File file) throws IOException {
